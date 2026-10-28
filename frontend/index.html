@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Data</title>
+    <script>
+        async function submit(){
+            var input = document.getElementById("id1");
+            var result = document.getElementById("result");
+
+            try{
+                const response = await fetch(
+                    "http://localhost:9090/api/input",
+                    {
+                    method: "POST",
+                    headers:{
+                    "Content-Type":"text/plain"
+                    },
+                    body:input.value
+                    }
+                );
+
+                const message = await response.text();
+                if(!response.ok){
+                throw new Error(message || "Request Failed");
+                }
+
+                result.textContent = message;
+                document.getElementById("id1").value = "";
+            }catch(error)
+            {
+            result.textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+</head>
+<body>
+<p> Enter the input </p>
+<input type="text" placeholder="Enter the input" id="id1">
+<button onclick="submit()"> Submit </button>
+<p id="result"> </p>
+</body>
+</html>
